@@ -72,7 +72,6 @@ bool ImportCell0Ds(PolygonalMesh& mesh)
 		
         mesh.Cell0DsId.push_back(id);
 
-        /// Memorizza i marker
         if(marker != 0)
         {
             const auto it = mesh.MarkerCell0Ds.find(marker);
@@ -82,7 +81,6 @@ bool ImportCell0Ds(PolygonalMesh& mesh)
             }
             else
             {
-                // mesh.MarkerCell0Ds[marker].push_back(id);
                 it->second.push_back(id);
             }
         }
@@ -139,7 +137,6 @@ bool ImportCell1Ds(PolygonalMesh& mesh)
 		
         mesh.Cell1DsId.push_back(id);
 
-        /// Memorizza i marker
         if(marker != 0)
         {
             const auto it = mesh.MarkerCell1Ds.find(marker);
@@ -148,8 +145,7 @@ bool ImportCell1Ds(PolygonalMesh& mesh)
                 mesh.MarkerCell1Ds.insert({marker, {id}});
             }
             else
-            {
-                // mesh.MarkerCell1Ds[marker].push_back(id);
+            {             
                 it->second.push_back(id);
             }
         }
@@ -173,7 +169,6 @@ bool ImportCell2Ds(PolygonalMesh& mesh)
 
     file.close();
 
-    // remove header
     listLines.pop_front();
 
     mesh.NumCell2Ds = listLines.size();
@@ -223,7 +218,6 @@ bool ImportCell2Ds(PolygonalMesh& mesh)
 		mesh.Cell2DsNumEdges.push_back(NumEdges);
         mesh.Cell2DsEdges.push_back(edges);
 		
-		/// Memorizza i marker
         if(marker != 0)
         {
             const auto it = mesh.MarkerCell2Ds.find(marker);
@@ -233,7 +227,6 @@ bool ImportCell2Ds(PolygonalMesh& mesh)
             }
             else
             {
-                // mesh.MarkerCell2Ds[marker].push_back(id);
                 it->second.push_back(id);
             }
         }
