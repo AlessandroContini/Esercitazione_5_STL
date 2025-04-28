@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cmath>
 
 namespace PolygonalLibrary
 {
@@ -55,16 +56,16 @@ bool ImportCell0Ds(PolygonalMesh& mesh)
 		string tmp;
 		getline(converter, tmp, ';');
 		unsigned int id = stoul(tmp);
-		cout << "ID: " << id << endl;
+		//cout << "ID: " << id << endl;
 		getline(converter, tmp, ';');
         unsigned int marker = stoul(tmp);
-		cout << "marker: " << marker << endl;
+		//cout << "marker: " << marker << endl;
 		
 		Vector2d coord;
 		for (unsigned int i = 0; i < 2; ++i) {
 			getline(converter, tmp, ';');
 			coord(i) = stod(tmp);
-			cout << "Coordinate " << i << ": " << coord(i) << endl;
+			//cout << "Coordinate " << i << ": " << coord(i) << endl;
 		}
 		
 		mesh.Cell0DsCoordinates(0, id) = coord(0);
@@ -232,6 +233,64 @@ bool ImportCell2Ds(PolygonalMesh& mesh)
         }
     }
 
+    return true;
+}
+
+//TEST SUI DATI
+bool TestMarkers(PolygonalMesh& mesh)
+{
+	for(const auto& marker_coppie : mesh.MarkerCell0Ds)
+		for(unsigned int id : marker_coppie.second)
+			if(id >= mesh.Cell0DsId.size() || mesh.Cell0DsId[id] != id)
+				return false;
+			
+	for(const auto& marker_coppie : mesh.MarkerCell1Ds)
+		for(unsigned int id : marker_coppie.second)
+			if(id >= mesh.Cell1DsId.size() || mesh.Cell1DsId[id] != id)
+				return false;
+			
+	for(const auto& marker_coppie : mesh.MarkerCell2Ds)
+		for(unsigned int id : marker_coppie.second)
+			if(id >= mesh.Cell2DsId.size() || mesh.Cell2DsId[id] != id)
+				return false;
+			
+	return true;
+}
+
+bool TestEdgeLength(PolygonalMesh& mesh)
+{
+	for(unsigned int i = 0; i < mesh.NumCell1Ds; i++){
+		int origin = mesh.Cell1DsExtrema(0, i);
+		int end = mesh.Cell1DsExtrema(1, i);
+		
+		double length = abs(end-origin);
+		if(length==0)
+		return false;
+	}
+	return true;
+}
+
+bool TestPolygonArea(PolygonalMesh& mesh)
+{
+	for(unsigned int i = 0; i < mesh.NumCell2Ds; i++){
+		const VectorXi& vertices = mesh.Cell2DsVertices[i];
+        double area = 0.0;
+        int n = vertices.size();
+
+        for (int i = 0; i < n; ++i)
+        {
+            int j = (i + 1) % n; //modulo n (quando arriva all'ultimo torna al primo)
+            double xi = mesh.Cell0DsCoordinates(0, vertices(i));
+            double yi = mesh.Cell0DsCoordinates(1, vertices(i));
+            double xj = mesh.Cell0DsCoordinates(0, vertices(j));
+            double yj = mesh.Cell0DsCoordinates(1, vertices(j));
+            area += (xi * yj - xj * yi);
+        }
+
+        area = fabs(area) * 0.5;
+        if (area == 0.0)
+            return false;
+    }
     return true;
 }
 

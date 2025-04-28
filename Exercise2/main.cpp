@@ -62,5 +62,22 @@ int main()
                                  {},
                                  cell1Ds_properties);
     }
+	
+	if (!TestMarkers(mesh)){
+        cerr << "Errore: marker non memorizzati correttamente." << endl;
+		return 1;  
+    }
+
+    if (!TestEdgeLength(mesh)){
+        cerr << "Errore: alcuni spigoli hanno lunghezza zero." << endl;
+		return 1;
+	}
+
+    if (!TestPolygonArea(mesh)){
+        cerr << "Errore: alcuni poligoni hanno area nulla." << endl;
+		return 1;
+    }
+	
     return 0;
+	
 }

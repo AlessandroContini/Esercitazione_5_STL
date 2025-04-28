@@ -15,4 +15,9 @@ bool ImportCell1Ds(PolygonalMesh& mesh);
 
 bool ImportCell2Ds(PolygonalMesh& mesh);
 
+bool TestMarkers(PolygonalMesh& mesh);
+
+bool TestEdgeLength(PolygonalMesh& mesh);
+
+bool TestPolygonArea(PolygonalMesh& mesh);
 }
