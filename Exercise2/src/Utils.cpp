@@ -260,12 +260,15 @@ bool TestMarkers(PolygonalMesh& mesh)
 bool TestEdgeLength(PolygonalMesh& mesh)
 {
 	for(unsigned int i = 0; i < mesh.NumCell1Ds; i++){
-		int origin = mesh.Cell1DsExtrema(0, i);
-		int end = mesh.Cell1DsExtrema(1, i);
+		double x0 = mesh.Cell0DsCoordinates(0, mesh.Cell1DsExtrema(0, i));
+		double x1 = mesh.Cell0DsCoordinates(0, mesh.Cell1DsExtrema(1, i));
+		double y0 = mesh.Cell0DsCoordinates(1, mesh.Cell1DsExtrema(0, i));
+		double y1 = mesh.Cell0DsCoordinates(1, mesh.Cell1DsExtrema(1, i));
 		
-		double length = abs(end-origin);
-		if(length==0)
-		return false;
+		double length = sqrt((x1-x0)*(x1-x0) + (y1-yo)*(y1-yo));
+		
+		if(length <= 1e-10)
+			return false;
 	}
 	return true;
 }
@@ -288,7 +291,7 @@ bool TestPolygonArea(PolygonalMesh& mesh)
         }
 
         area = fabs(area) * 0.5;
-        if (area == 0.0)
+        if (area <= 1e-10)
             return false;
     }
     return true;
