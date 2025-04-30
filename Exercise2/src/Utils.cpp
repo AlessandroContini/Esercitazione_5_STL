@@ -265,7 +265,7 @@ bool TestEdgeLength(PolygonalMesh& mesh)
 		double y0 = mesh.Cell0DsCoordinates(1, mesh.Cell1DsExtrema(0, i));
 		double y1 = mesh.Cell0DsCoordinates(1, mesh.Cell1DsExtrema(1, i));
 		
-		double length = sqrt((x1-x0)*(x1-x0) + (y1-yo)*(y1-yo));
+		double length = sqrt((x1-x0)*(x1-x0) + (y1-y0)*(y1-y0));
 		
 		if(length <= 1e-10)
 			return false;
